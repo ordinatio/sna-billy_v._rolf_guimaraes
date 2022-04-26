@@ -1,8 +1,12 @@
+*{
+    padding: 0;
+    margin: 0%;
+}
+
 h1{
     text-align: center;
     color: blue;
 }
 canvas {
-    border: solid 1px;
-    width: 100%;
+    border: solid 1px
 }
