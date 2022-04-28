@@ -7,7 +7,7 @@ var playerStats = {
 
 function startGame() {
   myGameArea.start();
-  myGamePiece = new Component(30, 30, "red", 10, 120);
+ 
   background = new ComponentImage(
     "images/grassbackground.png",
     0,
@@ -16,6 +16,7 @@ function startGame() {
     400
   );
   ComponentText(`Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level    }`, "30px", 10, 50)
+  castle = new ComponentImage("images/castel.canon.png",-20,100,340, 375)
 }
 
 var myGameArea = {
