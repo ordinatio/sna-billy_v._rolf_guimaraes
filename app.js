@@ -1,46 +1,71 @@
 var myGamePiece;
+var playerStats = {
+  hp: 5,
+  attackSpeed: 1,
+  level: 1,
+};
+
 function startGame() {
-    myGameArea.start();
-    myGamePiece = new Component(30, 30, "red", 10, 120);
-    background = new ComponentImage("images/grassbackground.png", 0, 100, window.innerWidth, 400)
+  myGameArea.start();
+  myGamePiece = new Component(30, 30, "red", 10, 120);
+  background = new ComponentImage(
+    "images/grassbackground.png",
+    0,
+    100,
+    window.innerWidth,
+    400
+  );
+  ComponentText(`Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level    }`, "30px", 10, 50)
 }
-
-
 
 var myGameArea = {
-    canvas : document.createElement("canvas"),
-    start : function() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = 500;
-        this.context = this.canvas.getContext("2d");
-        document.body.insertAdjacentElement("beforeend", this.canvas)
-    }
-}
+  canvas: document.createElement("canvas"),
+  start: function () {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = 500;
+    this.context = this.canvas.getContext("2d");
+    document.body.insertAdjacentElement("beforeend", this.canvas);
+  },
+};
 
 function Component(width, height, color, x, y) {
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    ctx = myGameArea.context;
-    ctx.fillStyle = color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+  this.width = width;
+  this.height = height;
+  this.x = x;
+  this.y = y;
+  ctx = myGameArea.context;
+  ctx.fillStyle = color;
+  ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
-function ComponentImage(imageSrc, x, y, width, height){
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    this.src = imageSrc
-    ctx = myGameArea.context;
+function ComponentImage(imageSrc, x, y, width, height) {
+  this.width = width;
+  this.height = height;
+  this.x = x;
+  this.y = y;
+  this.src = imageSrc;
+  ctx = myGameArea.context;
 
-    let img = new Image()
-    img.src = this.src
-    console.log(img, ctx)
-    img.addEventListener('load', function() {
-        ctx.drawImage(img, x, y, width, height)
-       }, false);
+  let img = new Image();
+  img.src = this.src;
+  console.log(img, ctx);
+  img.addEventListener(
+    "load",
+    function () {
+      ctx.drawImage(img, x, y, width, height);
+    },
+    false
+  );
 }
 
-startGame()
+function ComponentText(text, size, x, y) {
+  this.text = text;
+  this.size = size;
+  this.font = "Helvetica";
+  this.x = x;
+  this.y = y;
+
+  ctx.font = `${this.size} ${this.font}`;
+  ctx.fillText(this.text, this.x, this.y);
+}
+startGame();
