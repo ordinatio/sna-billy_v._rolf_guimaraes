@@ -18,12 +18,13 @@ function generateEnemies(){
     listOfEnemies.push(generateEnemy())
     i++
 }
+listOfEnemies.forEach(object => new ComponentImage(object.image, 1000, 300, 70, 75))
 console.log(listOfEnemies)
 }
 
 function generateEnemy(){
     let enemy = new Object();
-enemy.image = `enemy_${Math.floor(Math.random() * 10)}.png`;
+enemy.image = `images/enemy_${Math.floor(Math.random() * 10)}.png`;
 enemy.speed = 1;
 enemy.hp = Math.floor(Math.random() * 10) + 1;
 enemy.attack = 1; 
