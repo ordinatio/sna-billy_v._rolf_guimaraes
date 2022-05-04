@@ -18,7 +18,7 @@ function generateEnemies(){
     listOfEnemies.push(generateEnemy())
     i++
 }
-listOfEnemies.forEach(object => new ComponentImage(object.image, 1000, 300, 70, 75))
+listOfEnemies.forEach(object => new ComponentImage(object.image, object.xCord, 370, 70, 75))
 console.log(listOfEnemies)
 }
 
@@ -28,6 +28,7 @@ enemy.image = `images/enemy_${Math.floor(Math.random() * 10)}.png`;
 enemy.speed = 1;
 enemy.hp = Math.floor(Math.random() * 10) + 1;
 enemy.attack = 1; 
+enemy.xCord = Math.floor(Math.random() * 500) + 1300
 return enemy
 }
 
