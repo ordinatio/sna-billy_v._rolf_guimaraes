@@ -4,6 +4,9 @@ var playerStats = {
   attackSpeed: 1,
   level: 10,
 };
+let castle = document.getElementById("castle")
+console.log(castle)
+console.log(document.getElementsByClassName("castle"))
 
 let listOfEnemies = [];
 
@@ -12,11 +15,6 @@ function startGame() {
   myGameArea.background();
   generateEnemies();
 }
-setInterval(function () {
-  myGameArea.background();
-  moveEnemies();
-  drawEnemy();
-}, 20);
 
 function drawEnemy() {
   listOfEnemies.forEach(
@@ -36,7 +34,8 @@ function generateEnemies() {
 function generateEnemy() {
   let enemy = new Object();
   enemy.image = `images/enemy_${Math.floor(Math.random() * 10)}.png`;
-  enemy.speed = 1;
+  //Random number between 0.5 - 5
+  enemy.speed = Math.random() * (4 - 1) + 1;
   enemy.hp = Math.floor(Math.random() * 10) + 1;
   enemy.attack = 1;
   enemy.xCord = Math.floor(Math.random() * 500) + 500;
@@ -48,7 +47,6 @@ let CastleWallXCord = 200;
 function moveEnemies() {
   // while (enemy.xCord > (enemy.xcord-1000));
   //   xCord = xcord - 1
-  //   for xCord
   listOfEnemies.forEach((enemy) => {
     //move left
     enemy.xCord = enemy.xCord - enemy.speed;
@@ -71,22 +69,26 @@ var myGameArea = {
     document.body.insertAdjacentElement("beforeend", this.canvas);
   },
   background: function () {
-    new Component(window.innerWidth, window.innerHeight, "#87CEEB", 0, 0);
-    background = new ComponentImage(
-      "images/grassbackground.png",
-      0,
-      100,
-      window.innerWidth,
-      400
-    );
-    ComponentText(
-      `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
-      "30px",
-      10,
-      50,
-      "black"
-    );
-    castle = new ComponentImage("images/castel.canon.png", -55, 100, 340, 375);
+    // new Component(window.innerWidth, window.innerHeight -500, "#87CEEB", 0, 0);
+
+    // background = new ComponentImage(
+    //   "images/grassbackground.png",
+    //   0,
+    //   100,
+    //   window.innerWidth,
+    //   400
+    // );
+    
+    // ComponentText(
+    //   `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
+    //   "30px", 
+    //   10,
+    //   50,
+    //   "black"
+    // );
+    console.log(castle)
+    new ComponentImage(castle, 55, 100, 340, 375);
+    
   },
 };
 
@@ -108,16 +110,9 @@ function ComponentImage(imageSrc, x, y, width, height) {
   this.src = imageSrc;
   ctx = myGameArea.context;
 
-  let img = new Image();
-  img.src = this.src;
-  // console.log(img, ctx);
-  img.addEventListener(
-    "load",
-    function () {
-      ctx.drawImage(img, x, y, width, height);
-    },
-    false
-  );
+
+  ctx.drawImage(imageSrc, x, y, width, height);
+   
 }
 
 function ComponentText(text, size, x, y, color) {
@@ -133,3 +128,15 @@ function ComponentText(text, size, x, y, color) {
   ctx.fillText(this.text, this.x, this.y);
 }
 startGame();
+
+
+function update() {
+  requestAnimationFrame(update);
+  myGameArea.background();
+  moveEnemies();  
+
+  // drawEnemy();
+
+}
+
+update()

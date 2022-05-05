@@ -10,3 +10,7 @@ h1{
 canvas {
     border: solid 1px
 }
+
+#castle {
+    display: block;
+}
