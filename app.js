@@ -4,10 +4,20 @@ var playerStats = {
   attackSpeed: 1,
   level: 10,
 };
-let castle = document.getElementById("castle")
-console.log(castle)
-console.log(document.getElementsByClassName("castle"))
+let castle = document.getElementById("castle");
+let enemy_0 = document.getElementById("enemy_0");
+let enemy_1 = document.getElementById("enemy_1");
+let enemy_2 = document.getElementById("enemy_2");
+let enemy_3 = document.getElementById("enemy_3");
+let enemy_4 = document.getElementById("enemy_4");
+let enemy_5 = document.getElementById("enemy_5");
+let enemy_6 = document.getElementById("enemy_6");
+let enemy_7 = document.getElementById("enemy_7");
+let enemy_8 = document.getElementById("enemy_8");
+let enemy_9 = document.getElementById("enemy_9");
+let grassbackground = document.getElementById("grassbackground");
 
+let enemiesImage = [enemy_0,enemy_1,enemy_2,enemy_3,enemy_4,enemy_5,enemy_6,enemy_7,enemy_8,enemy_9]
 let listOfEnemies = [];
 
 function startGame() {
@@ -18,8 +28,7 @@ function startGame() {
 
 function drawEnemy() {
   listOfEnemies.forEach(
-    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)
-  );
+    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)  );
 }
 
 function generateEnemies() {
@@ -33,7 +42,7 @@ function generateEnemies() {
 
 function generateEnemy() {
   let enemy = new Object();
-  enemy.image = `images/enemy_${Math.floor(Math.random() * 10)}.png`;
+  enemy.image = enemiesImage[Math.floor(Math.random() * 10)];
   //Random number between 0.5 - 5
   enemy.speed = Math.random() * (4 - 1) + 1;
   enemy.hp = Math.floor(Math.random() * 10) + 1;
@@ -45,8 +54,6 @@ function generateEnemy() {
 let CastleWallXCord = 200;
 
 function moveEnemies() {
-  // while (enemy.xCord > (enemy.xcord-1000));
-  //   xCord = xcord - 1
   listOfEnemies.forEach((enemy) => {
     //move left
     enemy.xCord = enemy.xCord - enemy.speed;
@@ -54,8 +61,8 @@ function moveEnemies() {
       //player looses life
       playerStats.hp = playerStats.hp - 1;
       let index = listOfEnemies.indexOf(enemy);
+      console.log(enemy,"enemy", index,"index")
       listOfEnemies.splice(index);
-      console.log(index);
     }
   });
 }
@@ -69,25 +76,24 @@ var myGameArea = {
     document.body.insertAdjacentElement("beforeend", this.canvas);
   },
   background: function () {
-    // new Component(window.innerWidth, window.innerHeight -500, "#87CEEB", 0, 0);
+    new Component(window.innerWidth, window.innerHeight, "#87CEEB", 0, 0);
 
-    // background = new ComponentImage(
-    //   "images/grassbackground.png",
-    //   0,
-    //   100,
-    //   window.innerWidth,
-    //   400
-    // );
+    background = new ComponentImage(
+      grassbackground,
+      0,
+      100,
+      window.innerWidth,
+      400
+    );
     
-    // ComponentText(
-    //   `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
-    //   "30px", 
-    //   10,
-    //   50,
-    //   "black"
-    // );
-    console.log(castle)
-    new ComponentImage(castle, 55, 100, 340, 375);
+    ComponentText(
+      `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
+      "30px", 
+      10,
+      50,
+      "black"
+    );
+    new ComponentImage(castle, -55, 100, 340, 375);
     
   },
 };
@@ -122,21 +128,20 @@ function ComponentText(text, size, x, y, color) {
   this.x = x;
   this.y = y;
   this.color = color;
+  ctx = myGameArea.context;
   ctx.fillStyle = color;
 
   ctx.font = `${this.size} ${this.font}`;
   ctx.fillText(this.text, this.x, this.y);
 }
-startGame();
 
+startGame();
 
 function update() {
   requestAnimationFrame(update);
   myGameArea.background();
   moveEnemies();  
-
-  // drawEnemy();
-
+  drawEnemy();
 }
 
 update()
