@@ -19,14 +19,28 @@ let grassbackground = document.getElementById("grassbackground");
 
 let enemiesImage = [enemy_0,enemy_1,enemy_2,enemy_3,enemy_4,enemy_5,enemy_6,enemy_7,enemy_8,enemy_9]
 let listOfEnemies = [];
+let listOfProjectiles = [];
+
 
 function startGame() {
   myGameArea.start();
   myGameArea.background();
+  myGameArea.canvas.onclick = (event) => {
+    const rect = myGameArea.canvas.getBoundingClientRect();
+
+    console.log(`x: ${event.clientX-rect.left} y: ${event.clientY-rect.top}`);
+    const x = event.clientX-rect.left;
+    const y = event.clientY-rect.top;
+    listOfProjectiles.push(new Projectile(x,y,0,0,document.getElementById("enemy_0")));
+  }
   generateEnemies();
 }
 
 function drawEnemy() {
+  listOfEnemies.forEach(
+    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)  );
+}
+function drawProjectiles() {
   listOfEnemies.forEach(
     (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)  );
 }
@@ -142,6 +156,24 @@ function update() {
   myGameArea.background();
   moveEnemies();  
   drawEnemy();
+  listOfProjectiles.forEach(projectile => {projectile.draw();});
 }
 
 update()
+
+class Projectile
+{
+  constructor(x,y,speed,angle,imageSrc){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.angle = angle;
+    this.imageSrc = imageSrc;
+    this.ctx = myGameArea.context;
+    this.ctx.drawImage(imageSrc, x, y, 50, 50);
+  }
+  
+  draw(){
+    this.ctx.drawImage(this.imageSrc, this.x, this.y, 50, 50);
+  }
+}
