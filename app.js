@@ -17,10 +17,20 @@ let enemy_8 = document.getElementById("enemy_8");
 let enemy_9 = document.getElementById("enemy_9");
 let grassbackground = document.getElementById("grassbackground");
 
-let enemiesImage = [enemy_0,enemy_1,enemy_2,enemy_3,enemy_4,enemy_5,enemy_6,enemy_7,enemy_8,enemy_9]
+let enemiesImage = [
+  enemy_0,
+  enemy_1,
+  enemy_2,
+  enemy_3,
+  enemy_4,
+  enemy_5,
+  enemy_6,
+  enemy_7,
+  enemy_8,
+  enemy_9,
+];
 let listOfEnemies = [];
 let listOfProjectiles = [];
-
 
 function startGame() {
   myGameArea.start();
@@ -28,21 +38,29 @@ function startGame() {
   myGameArea.canvas.onclick = (event) => {
     const rect = myGameArea.canvas.getBoundingClientRect();
 
-    console.log(`x: ${event.clientX-rect.left} y: ${event.clientY-rect.top}`);
-    const x = event.clientX-rect.left;
-    const y = event.clientY-rect.top;
-    listOfProjectiles.push(new Projectile(x,y,0,0,document.getElementById("enemy_0")));
-  }
+    console.log(
+      `x: ${event.clientX - rect.left} y: ${event.clientY - rect.top}`
+    );
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const angle = Math.atan2(y, x) + Math.PI / 2;
+    listOfProjectiles.push(
+      new Projectile(
+        -Projectile.IMAGE_SIZE.x / 2,
+        -Projectile.IMAGE_SIZE.y / 2,
+        2.5,
+        angle,
+        document.getElementById("projectile")
+      )
+    );
+  };
   generateEnemies();
 }
 
 function drawEnemy() {
   listOfEnemies.forEach(
-    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)  );
-}
-function drawProjectiles() {
-  listOfEnemies.forEach(
-    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)  );
+    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)
+  );
 }
 
 function generateEnemies() {
@@ -62,6 +80,7 @@ function generateEnemy() {
   enemy.hp = Math.floor(Math.random() * 10) + 1;
   enemy.attack = 1;
   enemy.xCord = Math.floor(Math.random() * 500) + 500;
+  enemy.alive = true;
   return enemy;
 }
 
@@ -74,9 +93,7 @@ function moveEnemies() {
     if (enemy.xCord <= CastleWallXCord) {
       //player looses life
       playerStats.hp = playerStats.hp - 1;
-      let index = listOfEnemies.indexOf(enemy);
-      console.log(enemy,"enemy", index,"index")
-      listOfEnemies.splice(index);
+      enemy.alive = false;
     }
   });
 }
@@ -99,16 +116,15 @@ var myGameArea = {
       window.innerWidth,
       400
     );
-    
+
     ComponentText(
       `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
-      "30px", 
+      "30px",
       10,
       50,
       "black"
     );
     new ComponentImage(castle, -55, 100, 340, 375);
-    
   },
 };
 
@@ -130,9 +146,7 @@ function ComponentImage(imageSrc, x, y, width, height) {
   this.src = imageSrc;
   ctx = myGameArea.context;
 
-
   ctx.drawImage(imageSrc, x, y, width, height);
-   
 }
 
 function ComponentText(text, size, x, y, color) {
@@ -154,26 +168,47 @@ startGame();
 function update() {
   requestAnimationFrame(update);
   myGameArea.background();
-  moveEnemies();  
+  moveEnemies();
   drawEnemy();
-  listOfProjectiles.forEach(projectile => {projectile.draw();});
+  listOfProjectiles = listOfProjectiles.filter((projectile) => {
+    return projectile.timeToLive > 0;
+  });
+  listOfProjectiles.forEach((projectile) => {
+    projectile.update();
+    projectile.draw();
+  });
+  listOfEnemies = listOfEnemies.filter((enemy) => enemy.alive === true);
 }
 
-update()
+update();
 
-class Projectile
-{
-  constructor(x,y,speed,angle,imageSrc){
+class Projectile {
+  static IMAGE_SIZE = {
+    x: 50,
+    y: 50,
+  };
+  constructor(x, y, speed, angle, imageSrc) {
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.angle = angle;
+    this.angle = angle - Math.PI / 2;
     this.imageSrc = imageSrc;
     this.ctx = myGameArea.context;
-    this.ctx.drawImage(imageSrc, x, y, 50, 50);
+    this.timeToLive = 600;
   }
-  
-  draw(){
-    this.ctx.drawImage(this.imageSrc, this.x, this.y, 50, 50);
+  update() {
+    this.x += this.speed * Math.cos(this.angle);
+    this.y += this.speed * Math.sin(this.angle);
+    this.timeToLive -= 1;
+  }
+
+  draw() {
+    this.ctx.drawImage(
+      this.imageSrc,
+      this.x,
+      this.y,
+      Projectile.IMAGE_SIZE.x,
+      Projectile.IMAGE_SIZE.y
+    );
   }
 }
