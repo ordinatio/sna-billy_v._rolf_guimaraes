@@ -69,7 +69,7 @@ function startGame() {
   myGameArea.background();
   myGameArea.canvas.onclick = (event) => {
     const spawnPosition = {
-      x: 40,
+      x: 100,
       y: 140,
     };
 
@@ -121,7 +121,7 @@ function generateEnemy() {
   return enemy;
 }
 
-let CastleWallXCord = 200;
+let CastleWallXCord = 350;
 
 function moveEnemies() {
   listOfEnemies.forEach((enemy) => {
