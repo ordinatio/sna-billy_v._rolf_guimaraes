@@ -11,6 +11,7 @@ class Projectile {
     this.imageSrc = imageSrc;
     this.ctx = myGameArea.context;
     this.timeToLive = 600;
+    this.alive = true;
   }
   update() {
     this.x += this.speed * Math.cos(this.angle);
@@ -213,6 +214,9 @@ function update() {
     projectile.draw();
   });
   listOfEnemies = listOfEnemies.filter((enemy) => enemy.alive === true);
+  listOfProjectiles = listOfProjectiles.filter(
+    (projectile) => projectile.alive === true
+  );
   colissionCheck();
   requestAnimationFrame(update);
 }
@@ -258,8 +262,8 @@ function colissionCheck() {
           projectileAABB.y + projectileAABB.height > enemyAABB.y
         ) {
           console.log("Collision Detected");
-          currentEnemy.xCord = 0;
-          currentProjectile.x = 0;
+          currentProjectile.alive = false;
+          currentEnemy.alive = false;
         }
       }
     });
