@@ -220,44 +220,48 @@ function update() {
 update();
 
 function colissionCheck() {
-  const projectile1 = listOfProjectiles[0];
-  const enemy1 = listOfEnemies[0];
-  let projectileAABB = {
-    x: projectile1?.x,
-    y: projectile1?.y,
-    width: Projectile.IMAGE_SIZE.x,
-    height: Projectile.IMAGE_SIZE.y,
-  };
-  // ctx.rect(
-  //   projectileAABB.x,
-  //   projectileAABB.y,
-  //   projectileAABB.width,
-  //   projectileAABB.height
-  // );
-  // ctx.stroke();
+  listOfProjectiles.forEach((projectile) => {
+    listOfEnemies.forEach((enemy) => {
+      const currentProjectile = projectile;
+      const enemy1 = listOfEnemies[0];
+      let projectileAABB = {
+        x: currentProjectile?.x,
+        y: currentProjectile?.y,
+        width: Projectile.IMAGE_SIZE.x,
+        height: Projectile.IMAGE_SIZE.y,
+      };
+      // ctx.rect(
+      //   projectileAABB.x,
+      //   projectileAABB.y,
+      //   projectileAABB.width,
+      //   projectileAABB.height
+      // );
+      // ctx.stroke();
 
-  let enemyAABB = {
-    x: enemy1?.xCord,
-    y: 370,
-    width: 70,
-    height: 75,
-  };
-  // ctx.rect(enemyAABB.x, enemyAABB.y, enemyAABB.width, enemyAABB.height);
-  // ctx.stroke();
+      let enemyAABB = {
+        x: enemy1?.xCord,
+        y: 370,
+        width: 70,
+        height: 75,
+      };
+      // ctx.rect(enemyAABB.x, enemyAABB.y, enemyAABB.width, enemyAABB.height);
+      // ctx.stroke();
 
-  // kolla om skiten krockar!
-  if (projectileAABB != null && enemyAABB != null) {
-    console.log(projectileAABB);
-    console.log(enemyAABB);
-    if (
-      projectileAABB.x < enemyAABB.x + enemyAABB.width &&
-      projectileAABB.x + projectileAABB.width > enemyAABB.x &&
-      projectileAABB.y < enemyAABB.y + enemyAABB.height &&
-      projectileAABB.y + projectileAABB.height > enemyAABB.y
-    ) {
-      console.log("Collision Detected");
-      enemy1.xCord = 1250;
-      projectile1.x = 500;
-    }
-  }
+      // kolla om skiten krockar!
+      if (projectileAABB != null && enemyAABB != null) {
+        console.log(projectileAABB);
+        console.log(enemyAABB);
+        if (
+          projectileAABB.x < enemyAABB.x + enemyAABB.width &&
+          projectileAABB.x + projectileAABB.width > enemyAABB.x &&
+          projectileAABB.y < enemyAABB.y + enemyAABB.height &&
+          projectileAABB.y + projectileAABB.height > enemyAABB.y
+        ) {
+          console.log("Collision Detected");
+          enemy1.xCord = 1250;
+          currentProjectile.x = 500;
+        }
+      }
+    });
+  });
 }
