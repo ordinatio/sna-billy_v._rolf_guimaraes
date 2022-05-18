@@ -59,7 +59,7 @@ function startGame() {
 
 function drawEnemy() {
   listOfEnemies.forEach(
-    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)
+    (object) => new ComponentImage(object.image, object.xCord, 420, 70, 75)
   );
 }
 
@@ -120,11 +120,11 @@ var myGameArea = {
     ComponentText(
       `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
       "30px",
-      10,
+      100,
       50,
       "black"
     );
-    new ComponentImage(castle, -55, 100, 340, 375);
+    new ComponentImage(castle, 0, -10, 340, 500);
   },
 };
 
@@ -212,3 +212,6 @@ class Projectile {
     );
   }
 }
+
+// if ((playerStats.hp = lose)) {
+// }
