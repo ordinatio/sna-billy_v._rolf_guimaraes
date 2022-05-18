@@ -1,8 +1,39 @@
+class Projectile {
+  static IMAGE_SIZE = {
+    x: 50,
+    y: 50,
+  };
+  constructor(x, y, speed, angle, imageSrc) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.angle = angle - Math.PI / 2;
+    this.imageSrc = imageSrc;
+    this.ctx = myGameArea.context;
+    this.timeToLive = 600;
+  }
+  update() {
+    this.x += this.speed * Math.cos(this.angle);
+    this.y += this.speed * Math.sin(this.angle);
+    this.timeToLive -= 1;
+  }
+
+  draw() {
+    this.ctx.drawImage(
+      this.imageSrc,
+      this.x,
+      this.y,
+      Projectile.IMAGE_SIZE.x,
+      Projectile.IMAGE_SIZE.y
+    );
+  }
+}
+
 var myGamePiece;
 var playerStats = {
   hp: 5,
   attackSpeed: 1,
-  level: 10,
+  level: 1,
 };
 let castle = document.getElementById("castle");
 let enemy_0 = document.getElementById("enemy_0");
@@ -81,10 +112,10 @@ function generateEnemy() {
   let enemy = new Object();
   enemy.image = enemiesImage[Math.floor(Math.random() * 10)];
   //Random number between 0.5 - 5
-  enemy.speed = Math.random() * (4 - 1) + 1;
+  enemy.speed = Math.random() * 0.8 + 0.5;
   enemy.hp = Math.floor(Math.random() * 10) + 1;
   enemy.attack = 1;
-  enemy.xCord = Math.floor(Math.random() * 500) + 500;
+  enemy.xCord = Math.floor(Math.random() * 500) + 1200;
   enemy.alive = true;
   return enemy;
 }
@@ -171,7 +202,6 @@ function ComponentText(text, size, x, y, color) {
 startGame();
 
 function update() {
-  requestAnimationFrame(update);
   myGameArea.background();
   moveEnemies();
   drawEnemy();
@@ -183,37 +213,51 @@ function update() {
     projectile.draw();
   });
   listOfEnemies = listOfEnemies.filter((enemy) => enemy.alive === true);
+  colissionCheck();
+  requestAnimationFrame(update);
 }
 
 update();
 
-class Projectile {
-  static IMAGE_SIZE = {
-    x: 50,
-    y: 50,
+function colissionCheck() {
+  const projectile1 = listOfProjectiles[0];
+  const enemy1 = listOfEnemies[0];
+  let projectileAABB = {
+    x: projectile1?.x,
+    y: projectile1?.y,
+    width: Projectile.IMAGE_SIZE.x,
+    height: Projectile.IMAGE_SIZE.y,
   };
-  constructor(x, y, speed, angle, imageSrc) {
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.angle = angle - Math.PI / 2;
-    this.imageSrc = imageSrc;
-    this.ctx = myGameArea.context;
-    this.timeToLive = 600;
-  }
-  update() {
-    this.x += this.speed * Math.cos(this.angle);
-    this.y += this.speed * Math.sin(this.angle);
-    this.timeToLive -= 1;
-  }
+  // ctx.rect(
+  //   projectileAABB.x,
+  //   projectileAABB.y,
+  //   projectileAABB.width,
+  //   projectileAABB.height
+  // );
+  // ctx.stroke();
 
-  draw() {
-    this.ctx.drawImage(
-      this.imageSrc,
-      this.x,
-      this.y,
-      Projectile.IMAGE_SIZE.x,
-      Projectile.IMAGE_SIZE.y
-    );
+  let enemyAABB = {
+    x: enemy1?.xCord,
+    y: 370,
+    width: 70,
+    height: 75,
+  };
+  // ctx.rect(enemyAABB.x, enemyAABB.y, enemyAABB.width, enemyAABB.height);
+  // ctx.stroke();
+
+  // kolla om skiten krockar!
+  if (projectileAABB != null && enemyAABB != null) {
+    console.log(projectileAABB);
+    console.log(enemyAABB);
+    if (
+      projectileAABB.x < enemyAABB.x + enemyAABB.width &&
+      projectileAABB.x + projectileAABB.width > enemyAABB.x &&
+      projectileAABB.y < enemyAABB.y + enemyAABB.height &&
+      projectileAABB.y + projectileAABB.height > enemyAABB.y
+    ) {
+      console.log("Collision Detected");
+      enemy1.xCord = 1250;
+      projectile1.x = 500;
+    }
   }
 }
