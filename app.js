@@ -33,7 +33,7 @@ var myGamePiece;
 var playerStats = {
   hp: 5,
   attackSpeed: 1,
-  level: 1,
+  level: 10,
 };
 let castle = document.getElementById("castle");
 let enemy_0 = document.getElementById("enemy_0");
@@ -223,7 +223,7 @@ function colissionCheck() {
   listOfProjectiles.forEach((projectile) => {
     listOfEnemies.forEach((enemy) => {
       const currentProjectile = projectile;
-      const enemy1 = listOfEnemies[0];
+      const currentEnemy = enemy;
       let projectileAABB = {
         x: currentProjectile?.x,
         y: currentProjectile?.y,
@@ -239,7 +239,7 @@ function colissionCheck() {
       // ctx.stroke();
 
       let enemyAABB = {
-        x: enemy1?.xCord,
+        x: currentEnemy?.xCord,
         y: 370,
         width: 70,
         height: 75,
@@ -258,8 +258,8 @@ function colissionCheck() {
           projectileAABB.y + projectileAABB.height > enemyAABB.y
         ) {
           console.log("Collision Detected");
-          enemy1.xCord = 1250;
-          currentProjectile.x = 500;
+          currentEnemy.xCord = 0;
+          currentProjectile.x = 0;
         }
       }
     });
