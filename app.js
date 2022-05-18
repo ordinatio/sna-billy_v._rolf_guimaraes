@@ -36,18 +36,23 @@ function startGame() {
   myGameArea.start();
   myGameArea.background();
   myGameArea.canvas.onclick = (event) => {
+    const spawnPosition = {
+      x: 40,
+      y: 140,
+    };
+
     const rect = myGameArea.canvas.getBoundingClientRect();
 
     console.log(
       `x: ${event.clientX - rect.left} y: ${event.clientY - rect.top}`
     );
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = event.clientX - rect.left - spawnPosition.x;
+    const y = event.clientY - rect.top - spawnPosition.y;
     const angle = Math.atan2(y, x) + Math.PI / 2;
     listOfProjectiles.push(
       new Projectile(
-        -Projectile.IMAGE_SIZE.x / 2,
-        -Projectile.IMAGE_SIZE.y / 2,
+        spawnPosition.x - Projectile.IMAGE_SIZE.x / 2,
+        spawnPosition.y - Projectile.IMAGE_SIZE.y / 2,
         2.5,
         angle,
         document.getElementById("projectile")
@@ -124,7 +129,7 @@ var myGameArea = {
       50,
       "black"
     );
-    new ComponentImage(castle, -55, 100, 340, 375);
+    new ComponentImage(castle, 0, 100, 440, 475);
   },
 };
 
