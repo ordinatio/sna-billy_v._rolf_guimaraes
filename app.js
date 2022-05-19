@@ -70,7 +70,7 @@ function startGame() {
   myGameArea.canvas.onclick = (event) => {
     const spawnPosition = {
       x: 100,
-      y: 140,
+      y: 32,
     };
 
     const rect = myGameArea.canvas.getBoundingClientRect();
@@ -96,7 +96,7 @@ function startGame() {
 
 function drawEnemy() {
   listOfEnemies.forEach(
-    (object) => new ComponentImage(object.image, object.xCord, 370, 70, 75)
+    (object) => new ComponentImage(object.image, object.xCord, 400, 70, 75)
   );
 }
 
@@ -121,7 +121,7 @@ function generateEnemy() {
   return enemy;
 }
 
-let CastleWallXCord = 350;
+let CastleWallXCord = 250;
 
 function moveEnemies() {
   listOfEnemies.forEach((enemy) => {
@@ -157,11 +157,11 @@ var myGameArea = {
     ComponentText(
       `Hp:${playerStats.hp}| Attack Speed:${playerStats.attackSpeed}| Level:${playerStats.level}`,
       "30px",
-      10,
+      120,
       50,
       "black"
     );
-    new ComponentImage(castle, 0, 100, 440, 475);
+    new ComponentImage(castle, 0, 0, 440, 475);
   },
 };
 
