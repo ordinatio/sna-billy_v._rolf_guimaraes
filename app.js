@@ -70,7 +70,7 @@ function startGame() {
   myGameArea.canvas.onclick = (event) => {
     const spawnPosition = {
       x: 100,
-      y: 140,
+      y: 32,
     };
 
     const rect = myGameArea.canvas.getBoundingClientRect();
