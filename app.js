@@ -34,7 +34,7 @@ var myGamePiece;
 var playerStats = {
   hp: 5,
   attackSpeed: 1,
-  level: 1,
+  level: 10,
 };
 let castle = document.getElementById("castle");
 let enemy_0 = document.getElementById("enemy_0");
@@ -200,12 +200,6 @@ function ComponentText(text, size, x, y, color) {
   ctx.fillText(this.text, this.x, this.y);
 }
 
-function nextLevel(){
-  if(listOfEnemies.length === 0){
-    playerStats.level = playerStats.level + 1
-    generateEnemies()
-  }
-}
 startGame();
 
 function update() {
@@ -224,7 +218,6 @@ function update() {
     (projectile) => projectile.alive === true
   );
   colissionCheck();
-  nextLevel()
   requestAnimationFrame(update);
 }
 
