@@ -85,7 +85,7 @@ function startGame() {
       new Projectile(
         spawnPosition.x - Projectile.IMAGE_SIZE.x / 2,
         spawnPosition.y - Projectile.IMAGE_SIZE.y / 2,
-        2.5,
+        7,
         angle,
         document.getElementById("projectile")
       )
